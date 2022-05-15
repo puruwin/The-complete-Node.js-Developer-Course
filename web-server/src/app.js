@@ -1,24 +1,12 @@
+const path = require('path')
 const express = require('express')
+
 const request = require('request')
 
 const app = express()
+const publicDirectoryPath = path.join(__dirname, '../public')
 
-app.get('', (req, res) => {
-    res.send('<h1>Weather</h1>')
-})
-
-app.get('/help', (req, res) => {
-    res.send([{
-        name: 'David',
-        age: 22
-    }, {
-        name: 'Tamar'
-    }])
-})
-
-app.get('/about', (req, res) => {
-    res.send('<h1>About</h1>')
-})
+app.use(express.static(publicDirectoryPath))
 
 app.get('/weather', (req, res) => {
     const url = 'http://api.weatherstack.com/current?access_key=4fa109becd811329cf52f7bd471d3a7c&query=38.5412,0.1234'
