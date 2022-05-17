@@ -3,7 +3,6 @@ const express = require('express')
 const hbs = require('hbs')
 
 const request = require('request')
-const { hasSubscribers } = require('diagnostics_channel')
 
 const app = express()
 
@@ -67,6 +66,21 @@ app.get('/weather', (req, res) => {
     })
 })
 
+app.get('/help/*', (req, res) => {
+    res.render('404help', {
+        title: '404',
+        message: 'Help page not found',
+        name: 'David Perez'
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        message: 'Page not found',
+        name: 'David Perez'
+    })
+})
 
 app.listen(3000, () => {
     console.log('Server is up on port 3000')
