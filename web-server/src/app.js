@@ -1,8 +1,9 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
-
 const request = require('request')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 const app = express()
 
@@ -50,8 +51,25 @@ app.get('/weather', (req, res) => {
         })
     }
 
-    res.send({
-        address: req.query.address
+    geocode(req.query.address, (error, {latitude, longitude, location}) => {
+        if (error) {
+            return res.send({
+                error
+            })
+        }
+
+        forecast(latitude, longitude, (error, forecast) => {
+            if (error) {
+                return res.send({
+                    error
+                })
+            }
+
+            res.send({
+                location,
+                forecast
+            })
+        })
     })
     // const url = 'http://api.weatherstack.com/current?access_key=4fa109becd811329cf52f7bd471d3a7c&query=38.5412,0.1234'
     // request({ url, json: true }, (error, { body }) => {
