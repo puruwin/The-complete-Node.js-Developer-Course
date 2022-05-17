@@ -44,25 +44,47 @@ app.get('/help', (req, res) => {
 })
 
 app.get('/weather', (req, res) => {
-    const url = 'http://api.weatherstack.com/current?access_key=4fa109becd811329cf52f7bd471d3a7c&query=38.5412,0.1234'
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            res.send('Unable to connect to weather services.')
-        } else if (body.error) {
-            res.send('Unable to find location')
-        } else {
-            res.send({
-                location: {
-                    city: body.location.name,
-                    country: body.location.country
-                },
-                forecast: {
-                    description: body.current.weather_descriptions[0],
-                    temperature: body.current.temperature,
-                    feelslike: body.current.feelslike
-                }
-            })
-        }
+    if (!req.query.address) {
+        return res.send( {
+            error: 'You must provide an address.'
+        })
+    }
+
+    res.send({
+        address: req.query.address
+    })
+    // const url = 'http://api.weatherstack.com/current?access_key=4fa109becd811329cf52f7bd471d3a7c&query=38.5412,0.1234'
+    // request({ url, json: true }, (error, { body }) => {
+    //     if (error) {
+    //         res.send('Unable to connect to weather services.')
+    //     } else if (body.error) {
+    //         res.send('Unable to find location')
+    //     } else {
+    //         res.send({
+    //             location: {
+    //                 city: body.location.name,
+    //                 country: body.location.country
+    //             },
+    //             forecast: {
+    //                 description: body.current.weather_descriptions[0],
+    //                 temperature: body.current.temperature,
+    //                 feelslike: body.current.feelslike
+    //             }
+    //         })
+    //     }
+    // })
+})
+
+app.get('/products', (req, res) => {
+    if (!req.query.search) {
+        return res.send( {
+            error: 'You must provide a search term'
+        })
+    }
+
+    console.log(req.query.search)
+    res.send({
+        products: []
     })
 })
 
